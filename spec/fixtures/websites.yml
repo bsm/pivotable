@@ -1,0 +1,6 @@
+blog:
+  id: 1
+  name: Blog
+product:
+  id: 2
+  name: Product

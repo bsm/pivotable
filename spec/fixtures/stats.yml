@@ -1,0 +1,87 @@
+blog_main_jun_30:
+  period: 15155
+  website_id: 1
+  page_id: 11
+  views: 1000
+  visits: 100
+  bounce_rate: 0.4
+blog_main_jul_01:
+  period: 15156
+  website_id: 1
+  page_id: 11
+  views: 800
+  visits: 90
+  bounce_rate: 0.35
+blog_main_jul_02:
+  period: 15157
+  website_id: 1
+  page_id: 11
+  views: 1200
+  visits: 125
+  bounce_rate: 0.45
+
+blog_archive_jun_30:
+  period: 15155
+  website_id: 1
+  page_id: 12
+  views: 200
+  visits: 40
+  bounce_rate: 0.25
+blog_archive_jul_01:
+  period: 15156
+  website_id: 1
+  page_id: 12
+  views: 250
+  visits: 45
+  bounce_rate: 0.35
+blog_archive_jul_02:
+  period: 15157
+  website_id: 1
+  page_id: 12
+  views: 150
+  visits: 30
+  bounce_rate: 0.3
+
+product_home_jun_30:
+  period: 15155
+  website_id: 2
+  page_id: 21
+  views: 3000
+  visits: 600
+  bounce_rate: 0.6
+product_home_jul_01:
+  period: 15156
+  website_id: 2
+  page_id: 21
+  views: 3500
+  visits: 700
+  bounce_rate: 0.65
+product_home_jul_02:
+  period: 15157
+  website_id: 2
+  page_id: 21
+  views: 3200
+  visits: 580
+  bounce_rate: 0.55
+
+product_details_jun_30:
+  period: 15155
+  website_id: 2
+  page_id: 22
+  views: 2000
+  visits: 250
+  bounce_rate: 0.2
+product_details_jul_01:
+  period: 15156
+  website_id: 2
+  page_id: 22
+  views: 2200
+  visits: 240
+  bounce_rate: 0.25
+product_details_jul_02:
+  period: 15157
+  website_id: 2
+  page_id: 22
+  views: 1800
+  visits: 230
+  bounce_rate: 0.15

@@ -80,33 +80,30 @@ class Stat < ActiveRecord::Base
   belongs_to :page
   belongs_to :date, :class_name => 'Period', :foreign_key => :period
 
-  pivotable do
-
-    rotation :base do
-      sum     :views, :visits
-      average :bounce_rate
-    end
-
-    rotation :by_day => :base do
-      by      :period, :format => :period
-    end
-
-    rotation :by_month => :base do
-      by      Period.arel_table[:month_code], :format => :month_code
-      joins   :date
-    end
-
-    rotation :by_site => :base do
-      by      :website_id, Website.arel_table[:name]
-      joins   :website
-    end
-
-    rotation :by_page => :base do
-      maximum :bounce_rate, :as => :maximum_bounce_rate
-      by      :page_id, Page.arel_table[:name], Page.arel_table[:updated_at]
-      joins   :page
-    end
-
+  pivotable :base do
+    sum     :views, :visits
+    average :bounce_rate
   end
+
+  pivotable :by_day => :base do
+    by      :period, :format => :period
+  end
+
+  pivotable :by_month => :base do
+    by      Period.arel_table[:month_code], :format => :month_code
+    joins   :date
+  end
+
+  pivotable :by_site => :base do
+    by      :website_id, Website.arel_table[:name]
+    joins   :website
+  end
+
+  pivotable :by_page => :base do
+    maximum :bounce_rate, :as => :maximum_bounce_rate
+    by      :page_id, Page.arel_table[:name], Page.arel_table[:updated_at]
+    joins   :page
+  end
+
 end
 

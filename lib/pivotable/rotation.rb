@@ -1,18 +1,17 @@
 class Pivotable::Rotation
 
-  attr_reader :collection, :name, :parent, :block, :selects, :groups, :joins, :loaded
-  delegate    :model, :to => :collection
+  attr_reader :model, :name, :parent, :block, :selects, :groups, :joins, :loaded
   alias       :loaded? :loaded
 
-  def initialize(collection, name, parent = nil, &block)
-    @collection = collection
-    @name       = name.to_sym
-    @parent     = parent.to_sym if parent
-    @selects    = []
-    @groups     = []
-    @joins      = []
-    @block      = block
-    @loaded     = false
+  def initialize(model, name, parent = nil, &block)
+    @model   = model
+    @name    = name
+    @parent  = parent
+    @selects = []
+    @groups  = []
+    @joins   = []
+    @block   = block
+    @loaded  = false
   end
 
   def sum(*cols)
@@ -66,15 +65,15 @@ class Pivotable::Rotation
     relation
   end
 
+  def load!
+    return if loaded?
+
+    instance_eval &model.pivotable(parent).block if parent
+    instance_eval &block
+    @loaded = true
+  end
+
   private
-
-    def load!
-      return if loaded?
-
-      instance_eval &collection[parent].block if parent
-      instance_eval &block
-      @loaded = true
-    end
 
     def columns(*cols)
       opts = cols.extract_options!

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pivotable (0.1.0)
+    pivotable (0.0.2)
       abstract
       activerecord (~> 3.0.0)
       activesupport (~> 3.0.0)

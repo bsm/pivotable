@@ -7,7 +7,12 @@ module Pivotable
   autoload :Pivoting,   "pivotable/pivoting"
   autoload :Rotation,   "pivotable/rotation"
   autoload :Column,     "pivotable/column"
-  autoload :Collection, "pivotable/collection"
+
+  def self.name(*tokens)
+    result = tokens.flatten.map {|i| i.to_s.strip }.reject(&:blank?).join(':')
+    result unless result.blank?
+  end
+
 end
 
 ActiveRecord::Base.class_eval do

@@ -3,12 +3,12 @@ require "spec_helper"
 describe Pivotable::Rotation do
 
   subject do
-    Stat.pivotable[:by_page]
+    Stat.pivotable(:by_page)
   end
 
   describe "by default" do
     subject do
-      Pivotable::Collection.new(Page).rotation :latest do
+      Page.pivotable :latest do
         maximum :id
         by      :website_id
       end
@@ -20,24 +20,20 @@ describe Pivotable::Rotation do
     it { should have(:no).joins   }
   end
 
-  it 'should have accessor to collection' do
-    subject.collection.should be_a(Pivotable::Collection)
-  end
-
   it 'should have accessor to model' do
     subject.model.should == Stat
   end
 
   it 'should have a name' do
-    subject.name.should == :by_page
+    subject.name.should == "by_page"
   end
 
   it 'can have a parent' do
-    subject.parent.should == :base
+    subject.parent.should == "base"
   end
 
   describe "when loaded" do
-    before  { subject.send(:load!) }
+    before  { subject.load! }
 
     it { should be_loaded }
 
@@ -48,8 +44,7 @@ describe Pivotable::Rotation do
     end
 
     it 'should not double-load' do
-      subject.send(:load!)
-      subject.send(:load!)
+      2.times { subject.load! }
       subject.should have(7).selects
     end
 

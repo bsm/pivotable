@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name        = "pivotable"
   s.summary     = "Build pivotable data tables with ActiveRecord"
   s.description = "Great for building APIs & reports"
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
 
   s.authors     = ["Dimitrij Denissenko"]
   s.email       = "dimitrij@blacksquaremedia.com"

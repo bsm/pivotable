@@ -1,12 +1,13 @@
 require "active_support/core_ext"
 require "active_record"
 require "active_record/relation"
+require "abstract"
 
 module Pivotable
   autoload :Model,      "pivotable/model"
   autoload :Pivoting,   "pivotable/pivoting"
   autoload :Rotation,   "pivotable/rotation"
-  autoload :Column,     "pivotable/column"
+  autoload :Expression, "pivotable/expression"
 
   def self.name(*tokens)
     result = tokens.flatten.map {|i| i.to_s.strip }.reject(&:blank?).join(':')

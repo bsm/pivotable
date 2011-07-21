@@ -86,22 +86,26 @@ class Stat < ActiveRecord::Base
   end
 
   pivotable :by_day => :base do
-    by      :period, :format => :period
+    by      :period
   end
 
   pivotable :by_month => :base do
-    by      Period.arel_table[:month_code], :format => :month_code
-    joins   :date
+    by      :month_code, :via => Period.arel_table[:month_code]
+    joins   "RIGHT OUTER JOIN periods ON periods.period = stats.period"
   end
 
   pivotable :by_site => :base do
-    by      :website_id, Website.arel_table[:name]
+    by      :website_id
+    by      :website_name, :via => Website.arel_table[:name]
     joins   :website
   end
 
   pivotable :by_page => :base do
-    maximum :bounce_rate, :as => :maximum_bounce_rate
-    by      :page_id, Page.arel_table[:name], Page.arel_table[:updated_at]
+    maximum :top_bounce_rate, :via => :bounce_rate
+    by      :page_id
+    by      :page_name, :via => Page.arel_table[:name]
+    by      :page_updated_at, :via => Page.arel_table[:updated_at]
+
     joins   :page
   end
 

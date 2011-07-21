@@ -14,37 +14,88 @@ class Pivotable::Rotation
     @loaded  = false
   end
 
-  def sum(*cols)
-    calculate :sum, *cols
-  end
-
+  # Calculate minimum. Calls #calculate with :via => :minimum.
+  # See #calulate for examples.
   def minimum(*cols)
-    calculate :minimum, *cols
+    opts = cols.extract_options!.update :function => :minimum
+    calculate *(cols << opts)
   end
 
+  # Calculate maximum. Calls #calculate with :via => :maximum.
+  # See #calulate for examples.
   def maximum(*cols)
-    calculate :maximum, *cols
+    opts = cols.extract_options!.update :function => :maximum
+    calculate *(cols << opts)
   end
 
+  # Calculate sum. Calls #calculate with :via => :sum.
+  # See #calulate for examples.
+  def sum(*cols)
+    opts = cols.extract_options!.update :function => :sum
+    calculate *(cols << opts)
+  end
+
+  # Calculate sum. Calls #calculate with :via => :average.
+  # See #calulate for examples.
   def average(*cols)
-    calculate :average, *cols
+    opts = cols.extract_options!.update :function => :average
+    calculate *(cols << opts)
   end
 
-  def by(*cols)
-    cols = columns(*cols)
-    @selects += cols
-    @groups  += cols
-  end
-
-  def calculate(function, *cols)
-    columns(*cols).each do |col|
-      col.calculate!(function)
-      @selects << col
+  # Calculate value. Examples:
+  #
+  #   # Simple function
+  #   calculate :views, :function => :sum
+  #   # => SELECT SUM(table.views) AS views FROM table
+  #
+  #   # Use a special column
+  #   calculate :page_views, :via => :views, :function => :sum
+  #   # => SELECT SUM(table.views) AS page_views FROM table
+  #
+  #   # Use a custom SQL
+  #   calculate :page_views, :via => "SUM(table.views)"
+  #   # => SELECT SUM(table.views) AS page_views FROM table
+  #
+  #   # Use an AREL expressions
+  #   calculate :page_views, :via => Model.arel_table[:views].sum
+  #   # => SELECT SUM(table.views) AS page_views FROM table
+  #
+  def calculate(*cols)
+    opts = cols.extract_options!
+    cols.each do |col|
+      @selects << Pivotable::Expression::Calculation.new(model, col, opts)
     end
   end
 
-  def joins(*names)
-    @joins += names
+  # Group by a column. Examples:
+  #
+  #   # Simple function
+  #   by :page_id
+  #   # => SELECT table.page_id FROM table GROUP BY page_id
+  #
+  #   # Use a special column
+  #   by :pageid, :via => page_id
+  #   # => SELECT table.page_id AS pageid FROM table GROUP BY page_id
+  #
+  #   # Use a custom SQL
+  #   by :page_id, :via => "page_id * 2"
+  #   # => SELECT page_id * 2 AS page_id FROM table GROUP BY page_id * 2
+  #
+  #   # Use an AREL attributes
+  #   by :pageid, :via => Model.arel_table[:page_id]
+  #   # => SELECT table.page_id AS pageid FROM table GROUP BY page_id
+  #
+  def by(*cols)
+    opts = cols.extract_options!
+    cols.each do |col|
+      expr = Pivotable::Expression::Generic.new(model, col, opts)
+      @selects << expr
+      @groups  << expr
+    end
+  end
+
+  def joins(*args)
+    @joins += args
   end
 
   def merge(relation)
@@ -72,14 +123,5 @@ class Pivotable::Rotation
     instance_eval &block
     @loaded = true
   end
-
-  private
-
-    def columns(*cols)
-      opts = cols.extract_options!
-      cols.map do |col|
-        Pivotable::Column.new(model, col, opts)
-      end
-    end
 
 end

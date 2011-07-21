@@ -3,9 +3,10 @@ class Pivotable::Expression::Generic < Pivotable::Expression::Abstract
   def to_select
     case via
     when String
-      "#{via} AS #{model.connection.quote(name)}"
+      "#{via} AS #{name}"
     else
-      via.as(name.to_sym)
+      sql = Arel::Visitors.visitor_for(model.arel_table.engine).accept via
+      "#{sql} AS #{name}"
     end
   end
 

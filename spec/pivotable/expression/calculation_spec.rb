@@ -20,7 +20,7 @@ describe Pivotable::Expression::Calculation do
 
   it "should build select statements from function symbols" do
     subject.to_select.should be_a(Arel::Expression)
-    subject.to_select.to_sql.clean_sql.should == %(SUM(stats.views) AS 'views')
+    subject.to_select.to_sql.clean_sql.should == %(SUM(stats.views) AS views)
   end
 
   it "should not build group statements" do
@@ -30,13 +30,13 @@ describe Pivotable::Expression::Calculation do
   it "should build selects from SQL statements" do
     subject = expression :total_views, :via => "SUM(views)"
     subject.via.should == "SUM(views)"
-    subject.to_select.should == %(SUM(views) AS 'total_views')
+    subject.to_select.should == %(SUM(views) AS total_views)
   end
 
   it "should build selects from AREL expressions" do
     subject = expression :average_views, :via => Stat.arel_table[:views].average
     subject.via.should be_a(Arel::Expression)
-    subject.to_select.to_sql.clean_sql.should == %(AVG(stats.views) AS 'average_views')
+    subject.to_select.to_sql.clean_sql.should == %(AVG(stats.views) AS average_views)
   end
 
 end

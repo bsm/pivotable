@@ -15,9 +15,9 @@ class Pivotable::Expression::Calculation < Pivotable::Expression::Abstract
   def to_select
     case via
     when String
-      "#{via} AS #{model.connection.quote(name)}"
+      "#{via} AS #{name}"
     else
-      via.clone.as(model.connection.quote(name))
+      via.clone.as(name)
     end
   end
 

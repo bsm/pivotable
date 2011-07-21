@@ -52,8 +52,8 @@ describe Pivotable::Rotation do
       subject.merge(Stat.scoped).should be_a(ActiveRecord::Relation)
       subject.merge(Stat.joins(:date).order(Stat.arel_table[:period])).to_sql.clean_sql.should == %(
         SELECT
-          SUM(stats.views) AS 'views', SUM(stats.visits) AS 'visits', AVG(stats.bounce_rate) AS 'bounce_rate', MAX(stats.bounce_rate) AS 'top_bounce_rate',
-          stats.page_id AS 'page_id', pages.name AS 'page_name', pages.updated_at AS 'page_updated_at'
+          SUM(stats.views) AS views, SUM(stats.visits) AS visits, AVG(stats.bounce_rate) AS bounce_rate, MAX(stats.bounce_rate) AS top_bounce_rate,
+          stats.page_id AS page_id, pages.name AS page_name, pages.updated_at AS page_updated_at
         FROM stats
         INNER JOIN periods ON periods.period = stats.period
         INNER JOIN pages ON pages.id = stats.page_id
@@ -65,8 +65,8 @@ describe Pivotable::Rotation do
     it 'should build correct SQL joins' do
       Stat.pivotable(:by_month).merge(Stat.scoped).to_sql.clean_sql.should == %(
         SELECT
-          SUM(stats.views) AS 'views', SUM(stats.visits) AS 'visits', AVG(stats.bounce_rate) AS 'bounce_rate',
-          periods.month_code AS 'month_code'
+          SUM(stats.views) AS views, SUM(stats.visits) AS visits, AVG(stats.bounce_rate) AS bounce_rate,
+          periods.month_code AS month_code
         FROM stats
         RIGHT OUTER JOIN periods ON periods.period = stats.period
         GROUP BY periods.month_code

@@ -5,8 +5,9 @@ class Pivotable::Expression::Generic < Pivotable::Expression::Abstract
     when String
       "#{via} AS #{name}"
     else
-      sql = Arel::Visitors.visitor_for(model.arel_table.engine).accept via
-      "#{sql} AS #{name}"
+      via.as(name).to_sql.tap do |s|
+        s.sub!(/AS .+$/, "AS #{name}") if Arel::VERSION < "2.1.0"
+      end
     end
   end
 

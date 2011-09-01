@@ -5,8 +5,6 @@ class Pivotable::Expression::Abstract
     @name  = name.to_s
     @model = model
     @via   = process_via options[:via]
-
-    raise ArgumentError, "Could not find DB attribute for '#{@name}', please specify a :via option" if via.blank?
   end
 
   def to_select

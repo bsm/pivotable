@@ -14,10 +14,6 @@ describe Pivotable::Expression::Calculation do
     lambda { expression :views }.should raise_error(ArgumentError)
   end
 
-  it "should should require a valid function" do
-    lambda { expression :views, :function => :lower }.should raise_error(NoMethodError)
-  end
-
   it "should build select statements from function symbols" do
     subject.to_select.should be_a(Arel::Expression)
     subject.to_select.to_sql.clean_sql.should == %(SUM(stats.views) AS views)

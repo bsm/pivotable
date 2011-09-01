@@ -30,10 +30,6 @@ describe Pivotable::Expression::Abstract do
     subject.via.should be_a(Arel::Attribute)
   end
 
-  it "should require via attribute" do
-    lambda { expression :bogus }.should raise_error(ArgumentError)
-  end
-
   it "should work via SQL statements" do
     subject = expression :views, :via => "SUM(views)"
     subject.via.should be_a(String)

@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name        = "pivotable"
   s.summary     = "Build pivotable data tables with ActiveRecord"
   s.description = "Great for building APIs & reports"
-  s.version     = '0.0.4'
+  s.version     = '0.1.0'
 
   s.authors     = ["Dimitrij Denissenko"]
   s.email       = "dimitrij@blacksquaremedia.com"
@@ -17,6 +17,5 @@ Gem::Specification.new do |s|
   s.files        = Dir['LICENSE', 'README.markdown', 'lib/**/*']
 
   s.add_dependency "abstract"
-  s.add_dependency "activerecord", "~> 3.0.0"
-  s.add_dependency "activesupport", "~> 3.0.0"
+  s.add_dependency "activerecord", ">= 3.0.0", "< 3.2.0"
 end

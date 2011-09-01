@@ -16,15 +16,15 @@ require 'rspec/rails/fixture_support'
 require 'pivotable'
 
 SPEC_DATABASE     = File.dirname(__FILE__) + '/tmp/test.sqlite3'
-Time.zone_default = Time.__send__(:get_zone, "UTC")
 ActiveRecord::Base.time_zone_aware_attributes = true
 ActiveRecord::Base.default_timezone = :utc
-ActiveRecord::Base.configurations["test"] = { 'adapter' => 'sqlite3', 'database' => SPEC_DATABASE }
+ActiveRecord::Base.configurations["test"] = { 'adapter' => 'sqlite3', 'database' => ":memory:" }
+ActiveRecord::Base.establish_connection :test
 
 class String
 
   def clean_sql
-    gsub(/[`"]/, "").gsub(/\.0+/, "")
+    squish.gsub(/[`"]/, "").gsub(/\.0+/, "")
   end
 
 end
@@ -32,7 +32,6 @@ end
 RSpec.configure do |c|
   c.fixture_path = File.dirname(__FILE__) + '/fixtures'
   c.before(:all) do
-    FileUtils.mkdir_p File.dirname(SPEC_DATABASE)
     base = ActiveRecord::Base
     base.establish_connection(:test)
     base.connection.create_table :stats do |t|
@@ -55,10 +54,6 @@ RSpec.configure do |c|
       t.integer :month_code
       t.date    :calendar_date
     end
-  end
-
-  c.after(:all) do
-    FileUtils.rm_f(SPEC_DATABASE)
   end
 end
 

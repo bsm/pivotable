@@ -65,11 +65,11 @@ class Page < ActiveRecord::Base
 end
 
 class Period < ActiveRecord::Base
-  set_primary_key :period
+  self.primary_key = :period
 end
 
 class Stat < ActiveRecord::Base
-  set_primary_key :period
+  self.primary_key = :period
 
   belongs_to :website
   belongs_to :page
